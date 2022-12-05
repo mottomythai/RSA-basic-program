@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <vector>
 #include <cstring>
+#include <stdlib.h>
+#include <Windows.h>
 using namespace std;
 
 class BigInt{
