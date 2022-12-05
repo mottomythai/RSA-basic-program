@@ -237,11 +237,10 @@ BigInt& operator%=(BigInt& a, const BigInt& b) {
 	if (Null(b))
 		throw("Arithmetic Error: Division By 0");
 	if (a < b) {
-		a = BigInt();
 		return a;
 	}
 	if (a == b) {
-		a = BigInt(1);
+		a = BigInt();
 		return a;
 	}
 	int i, lgcat = 0, cc;
@@ -337,23 +336,6 @@ BigInt BigInt::gcd(BigInt a, BigInt h)
 
 // --Miller-Rabin primality test--
 
-// Calculates (a * b) % mod
-BigInt mulmod(BigInt a, BigInt b, BigInt mod)
-{
-	BigInt x("0"),
-		y = a % mod;
-	while (b > BigInt("0"))
-	{
-		if (b % 2 == 1)
-		{
-			x = (x + y) % mod;
-		}
-		y = (y * 2) % mod;
-		b /= 2;
-	}
-	return x % mod;
-}
-
 // Calculates A^B % mod
 BigInt modulo(BigInt A, BigInt B, BigInt mod)
 {
@@ -368,8 +350,31 @@ BigInt modulo(BigInt A, BigInt B, BigInt mod)
 		y = (y * y) % mod;
 		B = B / 2;
 	}
-	return x % mod;
+	return BigInt(x % mod);
 }
+
+//BigInt modulo(BigInt x, BigInt y, BigInt p)
+//{
+//	BigInt zero("0");
+//	BigInt res = 1;     // Initialize result
+//
+//	x = x % p; // Update x if it is more than or
+//	// equal to p
+//
+//	if (x == zero) return BigInt("0"); // In case x is divisible by p;
+//
+//	while (y > zero)
+//	{
+//		// If y is odd, multiply x with result
+//		if (y % 2 == 1)
+//			res = (res * x) % p;
+//
+//		// y must be even now
+//		y /= 2; // y = y/2
+//		x = (x * x) % p;
+//	}
+//	return res;
+//}
 
 // Giải thuật
 // Input số tự nhiên lẻ n
@@ -402,12 +407,14 @@ bool Miller(BigInt p, int iteration)
 
 	for (int i = 0; i < iteration; i++)
 	{
-		BigInt a = rand() % (p - 1) + 1, temp = s;
+		srand(GetTickCount64());
+		BigInt a = rand() % (p - 1) + 1;
+		BigInt temp = s;
 		BigInt mod = modulo(a, temp, p);
 
 		while (temp != p - 1 && mod != 1 && mod != p - 1)
 		{
-			mod = mulmod(mod, mod, p);
+			mod = modulo(mod, 2, p);
 			temp *= 2;
 		}
 

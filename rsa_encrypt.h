@@ -3,11 +3,13 @@
 
 #include <math.h>
 #include <string>
+#include <iostream>
 #include "algorithm.h"
 using namespace std;
 
 #define MILLER_ITER 20
 #define CONSTANT_K 2 // Constant number
+#define DEBUG true
 
 class RSA
 {

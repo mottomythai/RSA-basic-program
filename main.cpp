@@ -37,19 +37,15 @@ int main()
 	//						 419, 421, 431, 433, 439, 443, 449, 457, 461, 463,
 	//						 467, 479, 487, 491, 499, 503, 509, 521, 523, 541 };
 
+	//int total = 100;
 	//int success = 0;
 
 	//BigInt a, b("2"), temp("0"), zero("0");
-	//for (int i = 0; i < 100; i++)
+	//for (int i = 0; i < total; i++)
 	//{
 	//	a = BigInt::genRandomNum(15);
 	//	if (a % 2 == zero)
 	//		a += 1;
-	//	if (a == temp)
-	//	{
-	//		i--;
-	//		continue;
-	//	}
 
 	//	cout << a << '\n';
 	//	/*cout << a % b << '\n';*/
@@ -74,7 +70,13 @@ int main()
 	//	}
 	//}
 
-	//cout << "Statisctic: " << success << "/100\n";
+	//cout << "Statisctic: " << success << "/" << total << "\n";
+
+	//cout << Miller("53", 20) << '\n';
+	//cout << Miller("149", 20) << '\n';
+	//cout << Miller("317", 20) << '\n';
+	//cout << Miller("55439", 20) << '\n';
+	//cout << Miller("62501", 20) << '\n';
 
 	return 0;
 }

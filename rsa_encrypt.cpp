@@ -32,6 +32,7 @@ BigInt RSA::getD()
 
 RSA* RSA::regen()
 {
+	cout << ((DEBUG) ? "Initializing variables\n" : "");
 	BigInt p; // 77bit
 	BigInt q; // 77bit
 
@@ -50,6 +51,7 @@ RSA* RSA::regen()
 	BigInt zero("0");
 
 	// Gen p
+	cout << ((DEBUG) ? "Generaing P:...\n" : "");
 	while (true)
 	{
 		// Get a 77-bit number
@@ -78,8 +80,10 @@ RSA* RSA::regen()
 		if (Miller(p, MILLER_ITER))
 			break;
 	}
+	cout << ((DEBUG) ? "Generatind P: Successful\n" : "");
 
 	// Gen q
+	cout << ((DEBUG) ? "Generatind Q:...\n" : "");
 	while (true)
 	{
 		// Get a 77-bit number
@@ -99,10 +103,14 @@ RSA* RSA::regen()
 		if (Miller(p, MILLER_ITER))
 			break;
 	}
+	cout << ((DEBUG) ? "Generatind Q: Successful\n" : "");
 
+	cout << ((DEBUG) ? "Calculating N:...\n" : "");
 	// Calculate n
 	n = p * q;
+	cout << ((DEBUG) ? "Generatind N: Successful\n" : "");
 
+	cout << ((DEBUG) ? "Generatind E:...\n" : "");
 	BigInt phi = (p - 1) * (q - 1);
 	// Gen e
 	// e must be co-prime to phi and smaller than phi
@@ -118,8 +126,11 @@ RSA* RSA::regen()
 		if (Length(e) > 155)
 			continue;
 	}
+	cout << ((DEBUG) ? "Generatind E: Successful\n" : "");
 
+	cout << ((DEBUG) ? "Generatind D:...\n" : "");
 	// Calculate d
 	//  d*e = 1 + k*phi
 	d = (1 + (CONSTANT_K * phi)) / e;
+	cout << ((DEBUG) ? "Generatind D: Successful\n" : "");
 }
