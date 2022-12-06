@@ -30,6 +30,7 @@ public:
 
     BigInt getE();
     BigInt getD();
+    BigInt getN();
     RSA *regen();
 };
 

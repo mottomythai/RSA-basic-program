@@ -30,8 +30,14 @@ BigInt RSA::getD()
 	return d;
 }
 
+BigInt RSA::getN()
+{
+	return n;
+}
+
 RSA* RSA::regen()
 {
+	cout << ((DEBUG) ? "-------------Regenerator Started-------------\n" : "");
 	cout << ((DEBUG) ? "Initializing variables\n" : "");
 	BigInt p; // 77bit
 	BigInt q; // 77bit
@@ -131,20 +137,17 @@ RSA* RSA::regen()
 	// e must be co-prime to phi and smaller than phi
 	while (true)
 	{
-		e = BigInt::genRandomNum(155);
-		bool retry = false;
-		while (e <= phi)
-			// Check co-prime and length of e
-			if (Length(e) > 155)
-			{
-				retry = true;
-				break;
-			}
+		srand(GetTickCount64());
+		e = BigInt::genRandomNum(rand() % 65537 + 3);
+		while (e < phi)
+		{
+			// Check co-prime of e and phi
 			if (BigInt::gcd(e, phi) == 1)
 				break;
 			else
 				e++;
-		if (retry)
+		}
+		if (e >= phi)
 			continue;
 		break;
 	}
@@ -155,6 +158,7 @@ RSA* RSA::regen()
 	//  d*e = 1 + k*phi
 	d = (1 + (CONSTANT_K * phi)) / e;
 	cout << ((DEBUG) ? "Calculating D: Successful\n" : "");
+	cout << ((DEBUG) ? "-------------Regenerator Terminated-------------\n" : "");
 
 	return this;
 }
