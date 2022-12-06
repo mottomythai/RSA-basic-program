@@ -80,57 +80,81 @@ RSA* RSA::regen()
 		if (Miller(p, MILLER_ITER))
 			break;
 	}
-	cout << ((DEBUG) ? "Generatind P: Successful\n" : "");
+	cout << ((DEBUG) ? "Generating P: Successful\n" : "");
+	cout << ((DEBUG) ? "Selected P: " : "");
+	cout << ((DEBUG) ? p : "");
+	cout << ((DEBUG) ? "\n" : "");
 
 	// Gen q
-	cout << ((DEBUG) ? "Generatind Q:...\n" : "");
+	cout << ((DEBUG) ? "Generating Q:...\n" : "");
 	while (true)
 	{
 		// Get a 77-bit number
-		q = BigInt::genRandomNum(77);
+		q = BigInt::genRandomNum(78);
+		if (q % 2 == zero)
+			q += 1;
 
 		// Low level process
 		isPrime = false;
 		for (int divisor : first_100_prime)
-			if (isPrime = (q % divisor == zero) && (BigInt)pow(divisor, 2) <= q)
-				break; 
+		{
+			if ((BigInt)pow(divisor, 2) > q)
+				break;
+			if (q % divisor == zero)
+			{
+				isPrime = true;
+				break;
+			}
+		}
 		if (isPrime)
 			continue; // q gen again
 		// No divisor found, move to next step
 
 		// High-level process using Rabin Miller Primality Test
-		// If q IS prime then break and go to next step, else re-generate p
-		if (Miller(p, MILLER_ITER))
+		// If q IS prime then break and go to next step, else re-generate q
+		if (Miller(q, MILLER_ITER))
 			break;
 	}
-	cout << ((DEBUG) ? "Generatind Q: Successful\n" : "");
+	cout << ((DEBUG) ? "Generating Q: Successful\n" : "");
+	cout << ((DEBUG) ? "Selected Q: " : "");
+	cout << ((DEBUG) ? q : "");
+	cout << ((DEBUG) ? "\n" : "");
 
 	cout << ((DEBUG) ? "Calculating N:...\n" : "");
 	// Calculate n
 	n = p * q;
-	cout << ((DEBUG) ? "Generatind N: Successful\n" : "");
+	cout << ((DEBUG) ? "Calculating N: Successful\n" : "");
 
-	cout << ((DEBUG) ? "Generatind E:...\n" : "");
+	cout << ((DEBUG) ? "Generating E:...\n" : "");
 	BigInt phi = (p - 1) * (q - 1);
 	// Gen e
 	// e must be co-prime to phi and smaller than phi
 	while (true)
 	{
 		e = BigInt::genRandomNum(155);
-		while (e < phi)
+		bool retry = false;
+		while (e <= phi)
 			// Check co-prime and length of e
-			if (BigInt::gcd(e, phi) == 1 || Length(e) > 155)
+			if (Length(e) > 155)
+			{
+				retry = true;
+				break;
+			}
+			if (BigInt::gcd(e, phi) == 1)
 				break;
 			else
 				e++;
-		if (Length(e) > 155)
+		if (retry)
 			continue;
+		break;
 	}
-	cout << ((DEBUG) ? "Generatind E: Successful\n" : "");
+	cout << ((DEBUG) ? "Generating E: Successful\n" : "");
 
-	cout << ((DEBUG) ? "Generatind D:...\n" : "");
+	cout << ((DEBUG) ? "Calculating D:...\n" : "");
 	// Calculate d
 	//  d*e = 1 + k*phi
 	d = (1 + (CONSTANT_K * phi)) / e;
-	cout << ((DEBUG) ? "Generatind D: Successful\n" : "");
+	cout << ((DEBUG) ? "Calculating D: Successful\n" : "");
+
+	return this;
 }
