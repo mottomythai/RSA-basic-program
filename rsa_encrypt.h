@@ -20,10 +20,10 @@ private:
     BigInt e;
     BigInt d;
     BigInt n;
+    int numLen;
 
     //------Function------
-    RSA();
-
+    RSA(int len = 155);
 public:
     ~RSA();
     static RSA *getInstance();

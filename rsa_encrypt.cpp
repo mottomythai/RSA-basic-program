@@ -2,8 +2,9 @@
 
 RSA* RSA::instance = nullptr;
 
-RSA::RSA()
+RSA::RSA(int len)
 {
+	this->numLen = numLen;
 	regen();
 }
 
@@ -42,6 +43,9 @@ RSA* RSA::regen()
 	BigInt p; // 77bit
 	BigInt q; // 77bit
 
+	srand(GetTickCount64());
+	int e_digit = rand() % 5 + 1;
+
 	// For low-level compare
 	int first_100_prime[] = { 3, 5, 7, 11, 13, 17, 19, 23, 29,
 							 31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
@@ -61,7 +65,7 @@ RSA* RSA::regen()
 	while (true)
 	{
 		// Get a 77-bit number
-		p = BigInt::genRandomNum(77);
+		p = BigInt::genRandomNum(floor(numLen / 2) + floor(e_digit / 2));
 		if (p % 2 == zero)
 			p += 1;
 
@@ -96,7 +100,7 @@ RSA* RSA::regen()
 	while (true)
 	{
 		// Get a 77-bit number
-		q = BigInt::genRandomNum(78);
+		q = BigInt::genRandomNum(ceil(numLen / 2) + ceil(e_digit / 2));
 		if (q % 2 == zero)
 			q += 1;
 
@@ -137,8 +141,7 @@ RSA* RSA::regen()
 	// e must be co-prime to phi and smaller than phi
 	while (true)
 	{
-		srand(GetTickCount64());
-		e = BigInt::genRandomNum(rand() % 65537 + 3);
+		e = BigInt::genRandomNum(e_digit);
 		while (e < phi)
 		{
 			// Check co-prime of e and phi
