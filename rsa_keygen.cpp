@@ -1,10 +1,10 @@
-#include "rsa_encrypt.h"
+#include "rsa_keygen.h"
 
 RSA* RSA::instance = nullptr;
 
 RSA::RSA(int len)
 {
-	this->numLen = numLen;
+	this->numLen = len;
 	regen();
 }
 
@@ -13,10 +13,10 @@ RSA::~RSA()
 	delete instance;
 }
 
-RSA* RSA::getInstance()
+RSA* RSA::getInstance(int len)
 {
 	if (instance == nullptr)
-		instance = new RSA();
+		instance = new RSA(len);
 
 	return instance;
 }
@@ -38,10 +38,10 @@ BigInt RSA::getN()
 
 RSA* RSA::regen()
 {
-	cout << ((DEBUG) ? "-------------Regenerator Started-------------\n" : "");
-	cout << ((DEBUG) ? "Initializing variables\n" : "");
-	BigInt p; // 77bit
-	BigInt q; // 77bit
+	
+	cout << ((DEBUG) ? "\nInitializing variables\n" : "");
+	BigInt p;
+	BigInt q;
 
 	srand(GetTickCount64());
 	int e_digit = rand() % 5 + 1;
@@ -61,10 +61,10 @@ RSA* RSA::regen()
 	BigInt zero("0");
 
 	// Gen p
-	cout << ((DEBUG) ? "Generaing P:...\n" : "");
+	cout << ((DEBUG) ? "Generating P:...\n" : "");
 	while (true)
 	{
-		// Get a 77-bit number
+		// Get a random number
 		p = BigInt::genRandomNum(floor(numLen / 2) + floor(e_digit / 2));
 		if (p % 2 == zero)
 			p += 1;
@@ -91,15 +91,15 @@ RSA* RSA::regen()
 			break;
 	}
 	cout << ((DEBUG) ? "Generating P: Successful\n" : "");
-	cout << ((DEBUG) ? "Selected P: " : "");
+	cout << ((DEBUG) ? "P: " : "");
 	cout << ((DEBUG) ? p : "");
-	cout << ((DEBUG) ? "\n" : "");
+	cout << ((DEBUG) ? "\n---\n" : "");
 
 	// Gen q
 	cout << ((DEBUG) ? "Generating Q:...\n" : "");
 	while (true)
 	{
-		// Get a 77-bit number
+		// Get a random number
 		q = BigInt::genRandomNum(ceil(numLen / 2) + ceil(e_digit / 2));
 		if (q % 2 == zero)
 			q += 1;
@@ -126,14 +126,14 @@ RSA* RSA::regen()
 			break;
 	}
 	cout << ((DEBUG) ? "Generating Q: Successful\n" : "");
-	cout << ((DEBUG) ? "Selected Q: " : "");
+	cout << ((DEBUG) ? "Q: " : "");
 	cout << ((DEBUG) ? q : "");
-	cout << ((DEBUG) ? "\n" : "");
+	cout << ((DEBUG) ? "\n---\n" : "");
 
 	cout << ((DEBUG) ? "Calculating N:...\n" : "");
 	// Calculate n
 	n = p * q;
-	cout << ((DEBUG) ? "Calculating N: Successful\n" : "");
+	cout << ((DEBUG) ? "Calculating N: Successful\n---\n" : "");
 
 	cout << ((DEBUG) ? "Generating E:...\n" : "");
 	BigInt phi = (p - 1) * (q - 1);
@@ -154,14 +154,14 @@ RSA* RSA::regen()
 			continue;
 		break;
 	}
-	cout << ((DEBUG) ? "Generating E: Successful\n" : "");
+	cout << ((DEBUG) ? "Generating E: Successful\n---\n" : "");
 
 	cout << ((DEBUG) ? "Calculating D:...\n" : "");
 	// Calculate d
 	//  d*e = 1 + k*phi
 	d = (1 + (CONSTANT_K * phi)) / e;
 	cout << ((DEBUG) ? "Calculating D: Successful\n" : "");
-	cout << ((DEBUG) ? "-------------Regenerator Terminated-------------\n" : "");
+	cout << ((DEBUG) ? "-------------Key Generator Terminated-------------\n" : "");
 
 	return this;
 }

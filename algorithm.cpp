@@ -3,22 +3,27 @@
 using namespace std;
 
 // --BigInt--
-BigInt::BigInt(string& s) {
+BigInt::BigInt(string& s)
+{
 	digits = "";
 	int n = s.size();
-	for (int i = n - 1; i >= 0; i--) {
+	for (int i = n - 1; i >= 0; i--)
+	{
 		if (!isdigit(s[i]))
 			throw("ERROR");
 		digits.push_back(s[i] - '0');
 	}
 }
-BigInt::BigInt(unsigned long long nr) {
+
+BigInt::BigInt(unsigned long long nr)
+{
 	do {
 		digits.push_back(nr % 10);
 		nr /= 10;
 	} while (nr);
 }
-BigInt::BigInt(const char* s) {
+BigInt::BigInt(const char* s)
+{
 	digits = "";
 	for (int i = strlen(s) - 1; i >= 0; i--)
 	{
@@ -27,30 +32,42 @@ BigInt::BigInt(const char* s) {
 		digits.push_back(s[i] - '0');
 	}
 }
-BigInt::BigInt(const BigInt& a) {
+BigInt::BigInt(const BigInt& a) 
+{
 	digits = a.digits;
 }
 
-bool Null(const BigInt& a) {
+bool Null(const BigInt& a)
+{
 	if (a.digits.size() == 1 && a.digits[0] == 0)
 		return true;
 	return false;
 }
-int Length(const BigInt& a) {
+
+int Length(const BigInt& a)
+{
 	return a.digits.size();
 }
-int BigInt::operator[](const int index)const {
+
+int BigInt::operator[](const int index)const
+{
 	if (digits.size() <= index || index < 0)
 		throw("ERROR");
 	return digits[index];
 }
-bool operator==(const BigInt& a, const BigInt& b) {
+
+bool operator==(const BigInt& a, const BigInt& b)
+{
 	return a.digits == b.digits;
 }
-bool operator!=(const BigInt& a, const BigInt& b) {
+
+bool operator!=(const BigInt& a, const BigInt& b)
+{
 	return !(a == b);
 }
+
 bool operator<(const BigInt& a, const BigInt& b) {
+
 	int n = Length(a), m = Length(b);
 	if (n != m)
 		return n < m;
@@ -59,22 +76,29 @@ bool operator<(const BigInt& a, const BigInt& b) {
 			return a.digits[n] < b.digits[n];
 	return false;
 }
-bool operator>(const BigInt& a, const BigInt& b) {
+bool operator>(const BigInt& a, const BigInt& b) 
+{
 	return b < a;
 }
-bool operator>=(const BigInt& a, const BigInt& b) {
+
+bool operator>=(const BigInt& a, const BigInt& b) 
+{
 	return !(a < b);
 }
-bool operator<=(const BigInt& a, const BigInt& b) {
+
+bool operator<=(const BigInt& a, const BigInt& b) 
+{
 	return !(a > b);
 }
 
-BigInt& BigInt::operator=(const BigInt& a) {
+BigInt& BigInt::operator=(const BigInt& a) 
+{
 	digits = a.digits;
 	return *this;
 }
 
-BigInt& BigInt::operator++() {
+BigInt& BigInt::operator++() 
+{
 	int i, n = digits.size();
 	for (i = 0; i < n && digits[i] == 9; i++)
 		digits[i] = 0;
@@ -84,14 +108,17 @@ BigInt& BigInt::operator++() {
 		digits[i]++;
 	return *this;
 }
-BigInt BigInt::operator++(int temp) {
+
+BigInt BigInt::operator++(int temp) 
+{
 	BigInt aux;
 	aux = *this;
 	++(*this);
 	return aux;
 }
 
-BigInt& BigInt::operator--() {
+BigInt& BigInt::operator--() 
+{
 	if (digits[0] == 0 && digits.size() == 1)
 		throw("UNDERFLOW");
 	int i, n = digits.size();
@@ -102,20 +129,24 @@ BigInt& BigInt::operator--() {
 		digits.pop_back();
 	return *this;
 }
-BigInt BigInt::operator--(int temp) {
+
+BigInt BigInt::operator--(int temp) 
+{
 	BigInt aux;
 	aux = *this;
 	--(*this);
 	return aux;
 }
 
-BigInt& operator+=(BigInt& a, const BigInt& b) {
+BigInt& operator+=(BigInt& a, const BigInt& b) 
+{
 	int t = 0, s, i;
 	int n = Length(a), m = Length(b);
 	if (m > n)
 		a.digits.append(m - n, 0);
 	n = Length(a);
-	for (i = 0; i < n; i++) {
+	for (i = 0; i < n; i++) 
+	{
 		if (i < m)
 			s = (a.digits[i] + b.digits[i]) + t;
 		else
@@ -127,19 +158,23 @@ BigInt& operator+=(BigInt& a, const BigInt& b) {
 		a.digits.push_back(t);
 	return a;
 }
-BigInt operator+(const BigInt& a, const BigInt& b) {
+
+BigInt operator+(const BigInt& a, const BigInt& b) 
+{
 	BigInt temp;
 	temp = a;
 	temp += b;
 	return temp;
 }
 
-BigInt& operator-=(BigInt& a, const BigInt& b) {
+BigInt& operator-=(BigInt& a, const BigInt& b) 
+{
 	if (a < b)
 		throw("UNDERFLOW");
 	int n = Length(a), m = Length(b);
 	int i, t = 0, s;
-	for (i = 0; i < n; i++) {
+	for (i = 0; i < n; i++) 
+	{
 		if (i < m)
 			s = a.digits[i] - b.digits[i] + t;
 		else
@@ -156,7 +191,9 @@ BigInt& operator-=(BigInt& a, const BigInt& b) {
 		n--;
 	return a;
 }
-BigInt operator-(const BigInt& a, const BigInt& b) {
+
+BigInt operator-(const BigInt& a, const BigInt& b)
+{
 	BigInt temp;
 	temp = a;
 	temp -= b;
@@ -165,14 +202,16 @@ BigInt operator-(const BigInt& a, const BigInt& b) {
 
 BigInt& operator*=(BigInt& a, const BigInt& b)
 {
-	if (Null(a) || Null(b)) {
+	if (Null(a) || Null(b)) 
+	{
 		a = BigInt();
 		return a;
 	}
 	int n = a.digits.size(), m = b.digits.size();
 	vector<int> v(n + m, 0);
 	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++) {
+		for (int j = 0; j < m; j++) 
+		{
 			v[i + j] += (a.digits[i]) * (b.digits[j]);
 		}
 	n += m;
@@ -184,62 +223,79 @@ BigInt& operator*=(BigInt& a, const BigInt& b)
 		t = s / 10;
 		a.digits[i] = v[i];
 	}
+
 	for (int i = n - 1; i >= 1 && !v[i]; i--)
 		a.digits.pop_back();
 	return a;
 }
-BigInt operator*(const BigInt& a, const BigInt& b) {
+
+BigInt operator*(const BigInt& a, const BigInt& b) 
+{
 	BigInt temp;
 	temp = a;
 	temp *= b;
 	return temp;
 }
 
-BigInt& operator/=(BigInt& a, const BigInt& b) {
+BigInt& operator/=(BigInt& a, const BigInt& b) 
+{
 	if (Null(b))
 		throw("Arithmetic Error: Division By 0");
-	if (a < b) {
+	if (a < b)
+	{
 		a = BigInt();
 		return a;
 	}
-	if (a == b) {
+
+	if (a == b) 
+	{
 		a = BigInt(1);
 		return a;
 	}
+
 	int i, lgcat = 0, cc;
 	int n = Length(a), m = Length(b);
 	vector<int> cat(n, 0);
 	BigInt t;
-	for (i = n - 1; t * 10 + a.digits[i] < b; i--) {
+	for (i = n - 1; t * 10 + a.digits[i] < b; i--)
+	{
 		t *= 10;
 		t += a.digits[i];
 	}
-	for (; i >= 0; i--) {
+
+	for (; i >= 0; i--) 
+	{
 		t = t * 10 + a.digits[i];
 		for (cc = 9; cc * b > t; cc--);
 		t -= cc * b;
 		cat[lgcat++] = cc;
 	}
+
 	a.digits.resize(cat.size());
 	for (i = 0; i < lgcat; i++)
 		a.digits[i] = cat[lgcat - i - 1];
 	a.digits.resize(lgcat);
 	return a;
 }
-BigInt operator/(const BigInt& a, const BigInt& b) {
+
+BigInt operator/(const BigInt& a, const BigInt& b) 
+{
 	BigInt temp;
 	temp = a;
 	temp /= b;
 	return temp;
 }
 
-BigInt& operator%=(BigInt& a, const BigInt& b) {
+BigInt& operator%=(BigInt& a, const BigInt& b) 
+{
 	if (Null(b))
 		throw("Arithmetic Error: Division By 0");
-	if (a < b) {
+	if (a < b) 
+	{
 		return a;
 	}
-	if (a == b) {
+	if (a == b)
+	{
 		a = BigInt();
 		return a;
 	}
@@ -247,11 +303,14 @@ BigInt& operator%=(BigInt& a, const BigInt& b) {
 	int n = Length(a), m = Length(b);
 	vector<int> cat(n, 0);
 	BigInt t;
-	for (i = n - 1; t * 10 + a.digits[i] < b; i--) {
+	for (i = n - 1; t * 10 + a.digits[i] < b; i--) 
+	{
 		t *= 10;
 		t += a.digits[i];
 	}
-	for (; i >= 0; i--) {
+
+	for (; i >= 0; i--) 
+	{
 		t = t * 10 + a.digits[i];
 		for (cc = 9; cc * b > t; cc--);
 		t -= cc * b;
@@ -260,18 +319,22 @@ BigInt& operator%=(BigInt& a, const BigInt& b) {
 	a = t;
 	return a;
 }
-BigInt operator%(const BigInt& a, const BigInt& b) {
+
+BigInt operator%(const BigInt& a, const BigInt& b) 
+{
 	BigInt temp;
 	temp = a;
 	temp %= b;
 	return temp;
 }
 
-BigInt& operator^=(BigInt& a, const BigInt& b) {
+BigInt& operator^=(BigInt& a, const BigInt& b) 
+{
 	BigInt Exponent, Base(a);
 	Exponent = b;
 	a = 1;
-	while (!Null(Exponent)) {
+	while (!Null(Exponent)) 
+	{
 		if (Exponent[0] & 1)
 			a *= Base;
 		Base *= Base;
@@ -279,15 +342,19 @@ BigInt& operator^=(BigInt& a, const BigInt& b) {
 	}
 	return a;
 }
-BigInt operator^(BigInt& a, BigInt& b) {
+
+BigInt operator^(BigInt& a, BigInt& b) 
+{
 	BigInt temp(a);
 	temp ^= b;
 	return temp;
 }
 
-void divide_by_2(BigInt& a) {
+void divide_by_2(BigInt& a) 
+{
 	int add = 0;
-	for (int i = a.digits.size() - 1; i >= 0; i--) {
+	for (int i = a.digits.size() - 1; i >= 0; i--) 
+	{
 		int digit = (a.digits[i] >> 1) + add;
 		add = ((a.digits[i] & 1) * 5);
 		a.digits[i] = digit;
@@ -295,7 +362,9 @@ void divide_by_2(BigInt& a) {
 	while (a.digits.size() > 1 && !a.digits.back())
 		a.digits.pop_back();
 }
-ostream& operator<<(ostream& out, const BigInt& a) {
+
+ostream& operator<<(ostream& out, const BigInt& a) 
+{
 	for (int i = a.digits.size() - 1; i >= 0; i--)
 		cout << (short)a.digits[i];
 	return cout;
@@ -353,29 +422,6 @@ BigInt modulo(BigInt A, BigInt B, BigInt mod)
 	return BigInt(x % mod);
 }
 
-//BigInt modulo(BigInt x, BigInt y, BigInt p)
-//{
-//	BigInt zero("0");
-//	BigInt res = 1;     // Initialize result
-//
-//	x = x % p; // Update x if it is more than or
-//	// equal to p
-//
-//	if (x == zero) return BigInt("0"); // In case x is divisible by p;
-//
-//	while (y > zero)
-//	{
-//		// If y is odd, multiply x with result
-//		if (y % 2 == 1)
-//			res = (res * x) % p;
-//
-//		// y must be even now
-//		y /= 2; // y = y/2
-//		x = (x * x) % p;
-//	}
-//	return res;
-//}
-
 // Giải thuật
 // Input số tự nhiên lẻ n
 // Output Số nguyên tố: True/False
@@ -427,10 +473,6 @@ bool Miller(BigInt p, int iteration)
 }
 
 // --Miller-Rabin primality test--
-
-// --RSA--
-
-// --RSA--
 
 //REFERENCE:
 // BigInt: https://www.geeksforgeeks.org/bigint-big-integers-in-c-with-example/

@@ -7,7 +7,7 @@
 #include "algorithm.h"
 using namespace std;
 
-#define MILLER_ITER 20
+#define MILLER_ITER 10
 #define CONSTANT_K 2 // Constant number
 #define DEBUG true
 
@@ -23,10 +23,10 @@ private:
     int numLen;
 
     //------Function------
-    RSA(int len = 155);
+    RSA(int len);
 public:
     ~RSA();
-    static RSA *getInstance();
+    static RSA *getInstance(int);
 
     BigInt getE();
     BigInt getD();
