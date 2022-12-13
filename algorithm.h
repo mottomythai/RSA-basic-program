@@ -73,7 +73,6 @@ public:
     static BigInt gcd(BigInt a, BigInt b);
 };
 
-BigInt mulmod(BigInt a, BigInt b, BigInt mod);
 BigInt modulo(BigInt A, BigInt B, BigInt mod);
 bool Miller(BigInt p,int iteration);
 

@@ -24,9 +24,9 @@ int main()
 		len = 617;
 
 	RSA* rsa = RSA::getInstance(len);
-	cout << "Public key (E):" << rsa->getE() << "- " << Length(rsa->getE()) << " digits\n";
-	cout << "Public key (N):" << rsa->getN() << "- " << Length(rsa->getN()) << " digits\n";
-	cout << "Private key (D):" << rsa->getD() << "- " << Length(rsa->getD()) << " digits\n";
+	cout << "Public key (E):" << rsa->getE() << " - " << Length(rsa->getE()) << " digits\n";
+	cout << "Public key (N):" << rsa->getN() << " - " << Length(rsa->getN()) << " digits\n";
+	cout << "Private key (D):" << rsa->getD() << " - " << Length(rsa->getD()) << " digits\n";
 
 	return 0;
 }
