@@ -24,6 +24,7 @@ private:
 
     //------Function------
     RSA(int len);
+
 public:
     ~RSA();
     static RSA *getInstance(int);
@@ -31,7 +32,9 @@ public:
     BigInt getE();
     BigInt getD();
     BigInt getN();
-    RSA *regen();
+    RSA *keygen();
+    string encrypt(string);
+    string decrypt(string);
 };
 
 #endif // !RSA_ENCRYPT_H

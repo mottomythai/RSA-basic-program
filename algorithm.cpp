@@ -350,6 +350,11 @@ BigInt operator^(BigInt& a, BigInt& b)
 	return temp;
 }
 
+string BigInt::strconvert()
+{
+	return digits;
+}
+
 void divide_by_2(BigInt& a) 
 {
 	int add = 0;
@@ -473,6 +478,3 @@ bool Miller(BigInt p, int iteration)
 }
 
 // --Miller-Rabin primality test--
-
-//REFERENCE:
-// BigInt: https://www.geeksforgeeks.org/bigint-big-integers-in-c-with-example/

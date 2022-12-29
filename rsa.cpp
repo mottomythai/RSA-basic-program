@@ -1,11 +1,11 @@
-#include "rsa_keygen.h"
+#include "rsa.h"
 
 RSA* RSA::instance = nullptr;
 
 RSA::RSA(int len)
 {
 	this->numLen = len;
-	regen();
+	keygen();
 }
 
 RSA::~RSA()
@@ -36,7 +36,7 @@ BigInt RSA::getN()
 	return n;
 }
 
-RSA* RSA::regen()
+RSA* RSA::keygen()
 {
 	
 	cout << ((DEBUG) ? "\nInitializing variables\n" : "");
@@ -61,7 +61,7 @@ RSA* RSA::regen()
 	BigInt zero("0");
 
 	// Gen p
-	cout << ((DEBUG) ? "Generating P:...\n" : "");
+	// cout << ((DEBUG) ? "Generating P:...\n" : "");
 	while (true)
 	{
 		// Get a random number
@@ -90,13 +90,13 @@ RSA* RSA::regen()
 		if (Miller(p, MILLER_ITER))
 			break;
 	}
-	cout << ((DEBUG) ? "Generating P: Successful\n" : "");
+	/*cout << ((DEBUG) ? "Generating P: Successful\n" : "");
 	cout << ((DEBUG) ? "P: " : "");
 	cout << ((DEBUG) ? p : "");
-	cout << ((DEBUG) ? "\n---\n" : "");
+	cout << ((DEBUG) ? "\n---\n" : "");*/
 
 	// Gen q
-	cout << ((DEBUG) ? "Generating Q:...\n" : "");
+	//cout << ((DEBUG) ? "Generating Q:...\n" : "");
 	while (true)
 	{
 		// Get a random number
@@ -125,17 +125,17 @@ RSA* RSA::regen()
 		if (Miller(q, MILLER_ITER))
 			break;
 	}
-	cout << ((DEBUG) ? "Generating Q: Successful\n" : "");
+	/*cout << ((DEBUG) ? "Generating Q: Successful\n" : "");
 	cout << ((DEBUG) ? "Q: " : "");
 	cout << ((DEBUG) ? q : "");
-	cout << ((DEBUG) ? "\n---\n" : "");
+	cout << ((DEBUG) ? "\n---\n" : "");*/
 
-	cout << ((DEBUG) ? "Calculating N:...\n" : "");
+	//cout << ((DEBUG) ? "Calculating N:...\n" : "");
 	// Calculate n
 	n = p * q;
-	cout << ((DEBUG) ? "Calculating N: Successful\n---\n" : "");
+	//cout << ((DEBUG) ? "Calculating N: Successful\n---\n" : "");
 
-	cout << ((DEBUG) ? "Generating E:...\n" : "");
+	//cout << ((DEBUG) ? "Generating E:...\n" : "");
 	BigInt phi = (p - 1) * (q - 1);
 	// Gen e
 	// e must be co-prime to phi and smaller than phi
@@ -154,14 +154,30 @@ RSA* RSA::regen()
 			continue;
 		break;
 	}
-	cout << ((DEBUG) ? "Generating E: Successful\n---\n" : "");
+	//cout << ((DEBUG) ? "Generating E: Successful\n---\n" : "");
 
-	cout << ((DEBUG) ? "Calculating D:...\n" : "");
+	//cout << ((DEBUG) ? "Calculating D:...\n" : "");
 	// Calculate d
 	//  d*e = 1 + k*phi
 	d = (1 + (CONSTANT_K * phi)) / e;
-	cout << ((DEBUG) ? "Calculating D: Successful\n" : "");
-	cout << ((DEBUG) ? "-------------Key Generator Terminated-------------\n" : "");
+	//cout << ((DEBUG) ? "Calculating D: Successful\n" : "");
+	cout << ((DEBUG) ? "-------------Key Generator Completed-------------\n" : "");
 
 	return this;
+}
+
+string RSA::encrypt(string msg)
+{
+	BigInt m(msg);
+	BigInt c = modulo(m, e, n);
+	// c = (e * m) mod n 
+	return c.strconvert();
+}
+
+string RSA::decrypt(string msg)
+{
+	BigInt c(msg);
+	BigInt m = modulo(c, d, n);
+	// m = (c * d) mod n
+	return m.strconvert();
 }

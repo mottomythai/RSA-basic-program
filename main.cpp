@@ -1,6 +1,6 @@
 #include <iostream>
 #include "dos.h"
-#include "rsa_keygen.h"
+#include "rsa.h"
 using namespace std;
 
 int main()

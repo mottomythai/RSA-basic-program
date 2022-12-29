@@ -71,6 +71,7 @@ public:
     //Hao
     static BigInt genRandomNum(int size);
     static BigInt gcd(BigInt a, BigInt b);
+    string strconvert();
 };
 
 BigInt modulo(BigInt A, BigInt B, BigInt mod);
