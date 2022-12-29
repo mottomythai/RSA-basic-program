@@ -60,12 +60,10 @@ bool operator==(const BigInt& a, const BigInt& b)
 {
 	return a.digits == b.digits;
 }
-
 bool operator!=(const BigInt& a, const BigInt& b)
 {
 	return !(a == b);
 }
-
 bool operator<(const BigInt& a, const BigInt& b) {
 
 	int n = Length(a), m = Length(b);
@@ -80,12 +78,10 @@ bool operator>(const BigInt& a, const BigInt& b)
 {
 	return b < a;
 }
-
 bool operator>=(const BigInt& a, const BigInt& b) 
 {
 	return !(a < b);
 }
-
 bool operator<=(const BigInt& a, const BigInt& b) 
 {
 	return !(a > b);
@@ -96,7 +92,6 @@ BigInt& BigInt::operator=(const BigInt& a)
 	digits = a.digits;
 	return *this;
 }
-
 BigInt& BigInt::operator++() 
 {
 	int i, n = digits.size();
@@ -108,7 +103,6 @@ BigInt& BigInt::operator++()
 		digits[i]++;
 	return *this;
 }
-
 BigInt BigInt::operator++(int temp) 
 {
 	BigInt aux;
@@ -116,7 +110,6 @@ BigInt BigInt::operator++(int temp)
 	++(*this);
 	return aux;
 }
-
 BigInt& BigInt::operator--() 
 {
 	if (digits[0] == 0 && digits.size() == 1)
@@ -129,7 +122,6 @@ BigInt& BigInt::operator--()
 		digits.pop_back();
 	return *this;
 }
-
 BigInt BigInt::operator--(int temp) 
 {
 	BigInt aux;
@@ -158,7 +150,6 @@ BigInt& operator+=(BigInt& a, const BigInt& b)
 		a.digits.push_back(t);
 	return a;
 }
-
 BigInt operator+(const BigInt& a, const BigInt& b) 
 {
 	BigInt temp;
@@ -166,7 +157,6 @@ BigInt operator+(const BigInt& a, const BigInt& b)
 	temp += b;
 	return temp;
 }
-
 BigInt& operator-=(BigInt& a, const BigInt& b) 
 {
 	if (a < b)
@@ -191,7 +181,6 @@ BigInt& operator-=(BigInt& a, const BigInt& b)
 		n--;
 	return a;
 }
-
 BigInt operator-(const BigInt& a, const BigInt& b)
 {
 	BigInt temp;
@@ -199,7 +188,6 @@ BigInt operator-(const BigInt& a, const BigInt& b)
 	temp -= b;
 	return temp;
 }
-
 BigInt& operator*=(BigInt& a, const BigInt& b)
 {
 	if (Null(a) || Null(b)) 
@@ -228,7 +216,6 @@ BigInt& operator*=(BigInt& a, const BigInt& b)
 		a.digits.pop_back();
 	return a;
 }
-
 BigInt operator*(const BigInt& a, const BigInt& b) 
 {
 	BigInt temp;
@@ -236,7 +223,6 @@ BigInt operator*(const BigInt& a, const BigInt& b)
 	temp *= b;
 	return temp;
 }
-
 BigInt& operator/=(BigInt& a, const BigInt& b) 
 {
 	if (Null(b))
@@ -277,7 +263,6 @@ BigInt& operator/=(BigInt& a, const BigInt& b)
 	a.digits.resize(lgcat);
 	return a;
 }
-
 BigInt operator/(const BigInt& a, const BigInt& b) 
 {
 	BigInt temp;
@@ -285,7 +270,6 @@ BigInt operator/(const BigInt& a, const BigInt& b)
 	temp /= b;
 	return temp;
 }
-
 BigInt& operator%=(BigInt& a, const BigInt& b) 
 {
 	if (Null(b))
@@ -319,7 +303,6 @@ BigInt& operator%=(BigInt& a, const BigInt& b)
 	a = t;
 	return a;
 }
-
 BigInt operator%(const BigInt& a, const BigInt& b) 
 {
 	BigInt temp;
@@ -327,7 +310,6 @@ BigInt operator%(const BigInt& a, const BigInt& b)
 	temp %= b;
 	return temp;
 }
-
 BigInt& operator^=(BigInt& a, const BigInt& b) 
 {
 	BigInt Exponent, Base(a);
@@ -342,7 +324,6 @@ BigInt& operator^=(BigInt& a, const BigInt& b)
 	}
 	return a;
 }
-
 BigInt operator^(BigInt& a, BigInt& b) 
 {
 	BigInt temp(a);
